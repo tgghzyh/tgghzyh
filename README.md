@@ -2,6 +2,8 @@
 
 ### vLLM
 
+Fixed a pipeline-parallel inference bug in the Transformers backend. Later stages now pass received hidden states to their first decoder layer without reapplying embedding scaling or positional embeddings. This fixes a GPTBigCode shape mismatch and incorrect outputs in models such as Granite. [PR #67648](https://github.com/vllm-project/vllm/pull/67648) · [Upstream commit](https://github.com/vllm-project/vllm/commit/1c0b139293a22cce96c41c9fb32cbf2c31d30e7a)
+
 Reduced host memory use in online beam search by retaining at most `beam_width` finished hypotheses between decoding steps. In a Dolly workload with beam width 4, the peak number retained fell from 36 to 4. [PR #66841](https://github.com/vllm-project/vllm/pull/66841) · [Upstream commit](https://github.com/vllm-project/vllm/commit/0c80c3a6aa0201d1b4f71915f90c03fd64837cec)
 
 ### PyTorch
