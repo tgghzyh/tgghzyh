@@ -8,6 +8,8 @@ Reduced host memory use in online beam search by retaining at most `beam_width` 
 
 ### SGLang
 
+Fixed 32-bit offset overflow during Mamba2 packed prefill. The Triton kernels now widen the chunk index before multiplying by the projection's row stride, so long batches address the correct rows. [PR #51285](https://github.com/sgl-project/sglang/pull/51285) · [Upstream commit](https://github.com/sgl-project/sglang/commit/eb59d71264853e71d7036cfe1ff508083abba9a4)
+
 Fixed intermediate state indexing in SGLang's Triton Mamba kernel during speculative verification. When the buffer has room for more steps than a request uses, parent-state reads and snapshot writes now use the buffer's actual batch stride. [PR #51164](https://github.com/sgl-project/sglang/pull/51164) · [Upstream commit](https://github.com/sgl-project/sglang/commit/c0bdbb306b2c60557e2516b0d419eb293544a494)
 
 ### PyTorch
@@ -20,3 +22,14 @@ Two NCCL4Py optimizations I contributed to [NVIDIA NCCL](https://github.com/NVID
 
 - **Small reductions.** Reused buffer metadata for in-place reductions and cached PyTorch dtype lookups to reduce Python overhead. [PR #2609](https://github.com/NVIDIA/nccl/pull/2609) · [Upstream commit](https://github.com/NVIDIA/nccl/commit/f84202b0fd8876e6ec06dd570f27044c5bac364b)
 - **Framework imports.** Avoided importing PyTorch or CuPy when resolving buffers that don't need either framework. [PR #2610](https://github.com/NVIDIA/nccl/pull/2610) · [Upstream commit](https://github.com/NVIDIA/nccl/commit/27a903ff2b21a12c615f385408d66cbb86b7ceed)
+
+### faster-whisper
+
+- Removed a redundant copy of float32 audio before feature extraction. [PR #1700](https://github.com/SYSTRAN/faster-whisper/pull/1700)
+- Fixed batched transcription with voice activity detection disabled so it accepts audio exactly one window long. [PR #1701](https://github.com/SYSTRAN/faster-whisper/pull/1701)
+
+### AI4Network
+
+- Added an archived reproduction and prediction-curve plotting tool for case 22. [PR #11](https://github.com/ni4555/AI4Network/pull/11)
+- Added offline demos, rerun data and verification materials for cases 47–49. [PR #9](https://github.com/ni4555/AI4Network/pull/9) · [PR #8](https://github.com/ni4555/AI4Network/pull/8)
+- Fixed flow deployment for MF and PowerLink. [PR #7](https://github.com/ni4555/AI4Network/pull/7)
